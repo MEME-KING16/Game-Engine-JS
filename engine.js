@@ -80,9 +80,9 @@ class Sprite {
         throw new Error("No sprite img given");
         if(!cords)
         throw new Error("No Starting cords given");
-        if(!cords.x)
+        if(!cords.x && cords.x != 0)
         throw new Error("No x cord given");
-        if(!cords.y)
+        if(!cords.y && cords.y != 0)
         throw new Error("No y cord given");
         
         this.img = img
