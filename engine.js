@@ -107,35 +107,3 @@ class Physics {
         return initSpeed+this.gravity*time
      }
 }
-
-const game = new GameEngine({
-    width: 800,
-    height: 600,
-    canvasId: 'gameCanvas',
-  });
-  
-  // Add player sprite
-  const player = new Sprite('https://www.w3schools.com/favicon-16x16.png', { x: 1, y: 1 });
- game.onKeyDown('ArrowRight',()=>{player.x += 1})
-      
- game.onKeyDown('ArrowLeft',()=>{player.x -= 1})
- game.onKeyDown(' ',()=>{player.speed = -25})
-      
-
-  
-   // Handle physics
-   const gravity = new Physics({ gravity: 9.8 });
-   game.addPhysics(gravity);
-   game.addSprite(player);
-   game.start()
-  
-//   // Add AI for enemy NPCs
-//   const enemyAI = new AI();
-//   enemyAI.on('detectPlayer', () => {
-//     // AI logic to chase the player
-//   });
-//   game.addAI(enemyAI);
-  
-//   // Start game
-//   game.start();
-  
