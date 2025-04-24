@@ -15,18 +15,13 @@ class GameEngine {
         document.getElementById(this.canvasId).height = this.height
     }
     addSprite(sprite) {
-        if(!sprite)
-        throw new Error("Sprite parameter is undefined");
-        if(!(sprite instanceof Sprite))
-        throw new Error("Sprite parameter is not a instance of Sprite");
-        this.sprites.push(sprite)
-        const canvas = document.getElementById(this.canvasId);
-        const ctx = canvas.getContext("2d");
-        let img = document.createElement("img")
-        img.setAttribute("src",sprite.img)
-        setTimeout(()=>{ctx.drawImage(img, sprite.x, sprite.y);}, 10)
-        
+        if (!(sprite instanceof Sprite)) throw new Error("Invalid sprite");
+        const img = new Image();
+        img.src = sprite.img;
+        sprite.imageElement = img;
+        this.sprites.push(sprite);
     }
+
     onUpdate(script) {
     this.updatescripts.push(script)
     }
@@ -58,10 +53,7 @@ start() {
                 sprite.y = Math.min(Math.max(sprite.y, 0), this.height - 12);
                 sprite.x = Math.min(Math.max(sprite.x, 0), this.width);
             }
-
-            let img = new Image();
-            img.src = sprite.img;
-            ctx.drawImage(img, sprite.x, sprite.y);
+            ctx.drawImage(sprite.imageElement, sprite.x, sprite.y);
         }
 
         for (let script of this.updatescripts) {
