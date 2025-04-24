@@ -45,33 +45,34 @@ class GameEngine {
         this.physicsin = true
         this.physics = physics
     }
-    start() {
-        setInterval(() => {
-            const canvas = document.getElementById(this.canvasId);
+start() {
+    const loop = (timestamp) => {
+        const canvas = document.getElementById(this.canvasId);
         const ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let index = 0; index < this.sprites.length; index++) {
+
+        for (let sprite of this.sprites) {
             if (this.physicsin) {
-                this.sprites[index].speed = this.physics.calculateSpeed(0.01,this.sprites[index].speed)
-                this.sprites[index].y = this.physics.calculateY(0.01,this.sprites[index].speed,this.sprites[index].y)
-                console.log(this.physics.calculateY(0.01,this.sprites[index].speed,this.sprites[index].y),this.sprites[index].speed)
-                if(this.sprites[index].y > this.height -12)
-                this.sprites[index].y = this.height -12
-                if(this.sprites[index].y < 0)
-                this.sprites[index].y = 0
-                if(this.sprites[index].x > this.width)
-                    this.sprites[index].x = this.width
-                if(this.sprites[index].x < 0)
-                    this.sprites[index].x = 0
+                sprite.speed = this.physics.calculateSpeed(0.016, sprite.speed);
+                sprite.y = this.physics.calculateY(0.016, sprite.speed, sprite.y);
+                sprite.y = Math.min(Math.max(sprite.y, 0), this.height - 12);
+                sprite.x = Math.min(Math.max(sprite.x, 0), this.width);
             }
-            const sprite = this.sprites[index]
-            let img = document.createElement("img")
-            img.setAttribute("src",sprite.img)
+
+            let img = new Image();
+            img.src = sprite.img;
             ctx.drawImage(img, sprite.x, sprite.y);
-            
         }
-        }, 10);
-    }
+
+        for (let script of this.updatescripts) {
+            script();
+        }
+
+        requestAnimationFrame(loop);
+    };
+
+    requestAnimationFrame(loop);
+}
 }
 
 class Sprite {
